@@ -17,7 +17,7 @@ class IssueController extends Controller
      */
     public function index()
     {
-        /** @var \Atlassian\JiraRest\Requests\Project\ProjectRequest $request */
+        /** @var \Atlassian\JiraRest\Requests\Issue\IssueRequest $request */
             $request = app(Issue\IssueRequest::class);
 
             $response = $request->search([
