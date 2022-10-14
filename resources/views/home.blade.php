@@ -53,7 +53,6 @@
       <th scope="col">Version Number</th>
       <th scope="col">Release Date</th>
       <th scope="col">Release Note</th>
-      <th scope="col">Lables/Categories</th>
     </tr>
   </thead>
   <tbody>
@@ -65,7 +64,6 @@ foreach($issues as $item){ ?>
       <td>{{$item->fix_versions}}</td>
       <td>{{$item->release_date}}</td>
       <td>{{$item->release_notes}}</td>
-      <td></td>
     </tr>
 
    
