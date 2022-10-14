@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Issue;
-use App\Models\versions;
+use App\Models\version;
 use Illuminate\Http\Request;
 use DB;
 
@@ -18,22 +18,24 @@ class HomeController extends Controller
     public function index()
     {
 
-        $projects = Project::all();
+        $currentversion = Version::max('name');
+
+        
 
         //$issues = Issue::all();
-/*$data = DB::table('issues')
-                ->select('issuess.*', 'versions.release_date AS release_date')
-                ->join('versions', 'versions.project_id', '=', 'issues.project_id')
-                ->get();*/
+$issues = DB::table('issues')
+                ->select('issues.id as id', 'issues.key as key','issues.type_name as type_name', 'issues.fix_versions as fix_versions', 'issues.release_notes as release_notes', 'versions.release_date AS release_date')
+                ->leftJoin('versions', 'versions.project_id', '=', 'issues.project_id')
+                ->get();
 
-            $issues = DB::table('issues')
-            ->join('versions', 'issues.project_id', '=', 'versions.project_id')// joining the contacts table , where user_id and contact_user_id are same
+           /* $issues = DB::table('issues')
+            ->join('versions', 'issues.project_id', '=', 'versions.project_id')
             ->select('issues.*', 'versions.release_date')
-            ->get();
+            ->get();*/
 
 
 
-         return view('home', compact('projects', 'issues'));
+         return view('home', compact('issues', 'currentversion'));
     }
 
     /**

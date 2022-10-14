@@ -4,56 +4,43 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {
-  box-sizing: border-box;
-}
+<!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
 
-/* Create two equal columns that floats next to each other */
-.column1 {
-  float: left;
-  width: 30%;
-  padding: 10px;
-  height: auto; /* Should be removed. Only for demonstration */
-}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 
-/* Create two equal columns that floats next to each other */
-.column2 {
-  float: right;
-  width: 70%;
-  padding: 10px;
-  height: auto; /* Should be removed. Only for demonstration */
-}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 
-table, th, td {
-  border: 1px solid;
-}
-
-table {
-  width: 100%;
-}
-
-</style>
 </head>
 <body>
 
-<div class="row">
-  <div class="column1" style="background-color:#ccc;">
-  	<p><table><tr><td><h2>Release Notes</h2></td></tr></table></p>
-  	 <p><table><tr><td><h2>Charts</h2></td></tr></table></p>
-    
-    <p>Some text..</p>
-  </div>
-  <div class="column2" style="background-color:#ddd;">
-    <p><table><tr><td><h2>FIlters</h2></td></tr></table></p>
-    <p><table class="table">
+	<div class="container " style="margin-top:30px;">
+
+	  <div class="row mb-3">      
+      <div class="col-md-4 themed-grid-col">
+      	
+<!-- Image and text -->
+<nav class="navbar navbar-light bg-light">
+
+    <img src="{{url('logo.jpg')}}" width="30" height="30" class="d-inline-block align-top" alt="">
+    <h1>Release Notes</h1>
+    Current Version: {{$currentversion}}
+ 
+</nav>
+
+<div id="piechart3d" style="width: 400px; height: 400px;"></div>
+
+      </div>
+      <div class="col-md-8 themed-grid-col">
+      	
+<table id="sortTable" class="table table-striped table-bordered">
   <thead>
     <tr>
       <th scope="col">ID</th>
@@ -81,9 +68,49 @@ foreach($issues as $item){ ?>
    
 <?php } ?>
 </tbody>
-</table></p>
-  </div>
+</table>
+
+      </div>
+    </div>
+
 </div>
 
+
+
 </body>
+<script>
+$('#sortTable').DataTable();
+
+
+$(document).ready(function(){
+
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+
+var data = google.visualization.arrayToDataTable([
+['Task', 'Release Notes'],
+['New Feature', 10],
+['Defect', 50],
+['Improvement', 40],
+
+
+]);
+
+var options = {
+title: 'Release Notes',
+pieSliceText: 'value',
+is3D:true
+};
+var chart = new google.visualization.PieChart(document.getElementById('piechart3d'));
+
+chart.draw(data, options);
+}
+
+
+});
+</script>
+
 </html>
+
