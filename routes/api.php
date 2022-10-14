@@ -26,3 +26,4 @@ Route::apiResource('posts', PostController::class);
 Route::apiResource('projects', ProjectController::class);
 Route::apiResource('versions', VersionController::class);
 Route::apiResource('issues', IssueController::class);
+Route::get('getdetails', [ProjectController::class,'post']);

@@ -1,0 +1,5 @@
+id,key,name,projectTypeKey,simplified,isPrivate
+10610,CON,Connect,software,,
+10607,JN,Jinora,software,1,
+10004,UAS,UAS,software,,
+10300,UASSD,"UAS Service Desk",service_desk,,

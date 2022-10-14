@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 //use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Response;
+use Storage;
 
 class ProjectController extends Controller
 {
@@ -18,7 +20,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        
+
         /** @var \Atlassian\JiraRest\Requests\Project\ProjectRequest $request */
             $request = app(Project\ProjectRequest::class);
 
@@ -27,15 +29,68 @@ class ProjectController extends Controller
                 'startAt' => 0
             ]);
 
-            $projects = \json_decode($response->getBody()->getContents(), true);
+            $project = \json_decode($response->getBody()->getContents(), true);
 
-        /*$projects = Project::all();*/
+            foreach ($project['values'] as $value) {
+                foreach ($value['avatarUrls'] as $key => $val) {
+                    $avatar[] = array(
+                        'avatarURL' => $val
+                    );
+
+
+                }
+               
+                $projects[] = array(
+
+                    'jiraID' => $value['id'],
+                    'jirakey' => $value['key'],
+                    'name' => $value['name'],
+                    'avatarURL' => '', //$avatar,
+                    'created_at' => '',
+                    'updated_at' => '',
+                    "deleted_at" =>'',
+
+                );
+            }
+
+             $csv = fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
+
+             $columns = array(
+        'jiraID', 
+        'jirakey', 
+        'name', 
+        'avatarURL',
+        'created_at', 
+        'updated_at',
+        'deleted_at'
+    );
+ fputcsv($csv, $columns);
+    foreach($projects as $project) {
+    fputcsv($csv, array(
+            $project['jiraID'],
+            $project['jirakey'],
+            $project['name'],
+            $project['avatarURL'],
+            $project['created_at'],
+            $project['updated_at'],
+            $project['deleted_at']
+        ));
+    
+    }
+
+rewind($csv);
+$output = stream_get_contents($csv);
+
+// Put the content directly in file into the disk
+Storage::disk('temp')->put("jira_projects_".date('m-d-Y_').microtime(true).".csv", $output);
+        //$projects = Project::all();
 
         return response()->json([
             'status' => true,
             'project' => $projects
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

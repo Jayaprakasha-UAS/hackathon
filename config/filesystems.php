@@ -36,6 +36,12 @@ return [
             'throw' => false,
         ],
 
+        'temp' => [
+            'driver' => 'local',
+            'root'   => storage_path('app/temp'),
+            'cloud'  => env('CLOUD_TEMP_ENABLED', true),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

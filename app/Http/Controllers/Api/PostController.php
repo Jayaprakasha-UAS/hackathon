@@ -20,10 +20,21 @@ class PostController extends Controller
     public function index()
     {
 
-      /*  $productItemNumbers = [0, 15, 158, 584];
+        // output up to 5MB is kept in memory, if it becomes bigger it will
+// automatically be written to a temporary file
+$csv = fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
+
+fputcsv($csv, array('blah','blah'));
+rewind($csv);
+$output = stream_get_contents($csv);
+
+// Put the content directly in file into the disk
+Storage::disk('temp')->put("products-%s.csv", $output);
+
+        /*$productItemNumbers = [0, 15, 158, 584];
         $exportFileName     = sprintf('products-%s.csv', date('d-m-Y'));
-        Storage::disk('csv')->put($exportFileName, $productItemNumbers);
-*/
+        Storage::disk('csv')->put($exportFileName, $productItemNumbers);*/
+
      /* $issue = \Jira::issue('UAS-20286')->get();
         dd($issue);*/
 
