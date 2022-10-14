@@ -22,28 +22,32 @@
 <body>
 
 	<div class="container " style="margin-top:30px;">
-
-	  <div class="row mb-3">      
-      <div class="col-md-4 themed-grid-col">
+ <div class="row mb-3"> 
+ 	 <div class="col-md-6 themed-grid-col">
       	
 <!-- Image and text -->
 <nav class="navbar navbar-light bg-light">
 
-    <img src="{{url('logo.jpg')}}" width="30" height="30" class="d-inline-block align-top" alt="">
-    <h1>Release Notes</h1>
-    Current Version: {{$currentversion}}
- 
+    <img src="{{url('logo.jpg')}}" width="50" height="50" class="d-inline-block align-top" alt="">
+    <h1>Release Notes
+    </h1><br>
+<div> Current Version: <?php foreach ($currentversion as $value) { ?>
+    	{{$value->fix_versions}}
+ <?php } ?></div>
+   
 </nav>
 
-<div id="piechart3d" style="width: 400px; height: 400px;"></div>
+<!-- <div id="piechart3d" style="width: 400px; height: 400px;"></div> -->
 
       </div>
-      <div class="col-md-8 themed-grid-col">
+ </div>
+	  <div class="row mb-3">      
+     
+      <div class="col-md-12 themed-grid-col">
       	
 <table id="sortTable" class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th scope="col">ID</th>
       <th scope="col">Ticket ID</th>
       <th scope="col">Category</th>
       <th scope="col">Version Number</th>
@@ -56,7 +60,6 @@
   	<?php 
 foreach($issues as $item){ ?>
 	 <tr>
-      <td>{{$item->id}}</td>
       <td>{{$item->key}}</td>
       <td>{{$item->type_name}}</td>
       <td>{{$item->fix_versions}}</td>

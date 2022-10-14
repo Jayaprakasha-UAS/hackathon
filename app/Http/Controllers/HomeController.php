@@ -18,15 +18,22 @@ class HomeController extends Controller
     public function index()
     {
 
-        $currentversion = Version::max('name');
+        //$currentversion = Version::max('name');
 
+        $currentversion = DB::select( DB::raw("SELECT max(a.fix_versions) as fix_versions FROM issues a
+LEFT JOIN versions b
+ON a.fix_versions = b.name") );
         
 
         //$issues = Issue::all();
 $issues = DB::table('issues')
                 ->select('issues.id as id', 'issues.key as key','issues.type_name as type_name', 'issues.fix_versions as fix_versions', 'issues.release_notes as release_notes', 'versions.release_date AS release_date')
-                ->leftJoin('versions', 'versions.project_id', '=', 'issues.project_id')
+                ->join('versions', 'versions.name', '=', 'issues.fix_versions')
                 ->get();
+
+                foreach ($issues as $key => $value) {
+                    # code...
+                }
 
            /* $issues = DB::table('issues')
             ->join('versions', 'issues.project_id', '=', 'versions.project_id')
